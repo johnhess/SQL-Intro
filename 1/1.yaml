@@ -12,7 +12,6 @@ imports: |
 vars:
   1: |
     # no initial vars
-    self.initial_vars = {}
 
 ---------
 
