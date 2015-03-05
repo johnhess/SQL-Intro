@@ -1,5 +1,5 @@
 ---------
-name: 'Find the most densely populated country on earth'
+name: Find the most densely populated country on earth
 description: Use SQL to explore a database and import its data into python
 prerequisites: [9, 13]
 language: python
@@ -24,42 +24,53 @@ video: http://youtu.be/7raHYs803GA
 
 name: Reading SQL data into Python
 type: code
-solver: intro_code
 initial_vars: 1
 left_text: |
-  <p>We'll connect to our database using Python.  Once we're connected, we'll send queries in SQL.</p>
-  <p>The most important SQL commands for reading data are the <code>SELECT</code> and <code>FROM</code> keywords.</p>
-  <p>The standard syntax to read data is <code>SELECT col_name, another_col_name FROM table_name;</code></p>
-  <p>We'll read from the "people" table, which looks like this:
-  <python>name    favorite_color 
-  ======  ==============
-  Vik               Blue
-  John              Blue
-  Nick               Red
-  Morgan           Green
-  </python></p>
+  We'll connect to our database using Python. Once we're connected, we'll send
+  queries in SQL.
+
+  The most important SQL commands for reading data are the `SELECT` and `FROM`
+  keywords.
+
+  The standard syntax to read data is `SELECT col_name, another_col_name FROM
+  table_name;`
+
+  We'll read from the "people" table, which looks like this:  
+  ```python  
+  name   favorite_color 
+  ====== ============== 
+  Vik    Blue 
+  John   Blue 
+  Nick   Red 
+  Morgan Green  
+  ```
 initial_display: |
   import sqlite3 # import Python's SQLite3 library
   db_connection = sqlite3.connect('sample.db') # connect to our sample db
 
   # a simple SQL query to get the name and favorite_color from all rows in the people table
   query = 'SELECT name, favorite_color FROM people;'
-  
+
   # db_connection.execute(query) returns a cursor which has data and metadata
   cursor = db_connection.execute(query)
 
   # call the cursor's fetchall method here and print the result
-
 instructions: |
-  <p>Call <code>cursor.fetchall()</code> to get the rows and columns returned by the query.</p>
-  <p>Print the result of the cursor object's <code>fetchall()</code> method to see the data we got back from our query.</p>
-  <p>The data you print will be a list-of-tuples.  Each inner tuple represents one row from the table and has two elements, one for each column we requested in our query.</p>
+  Call `cursor.fetchall()` to get the rows and columns returned by the query.
+
+  Print the result of the cursor object's `fetchall()` method to see the data we
+  got back from our query.
+
+  The data you print will be a list-of-tuples. Each inner tuple represents one
+  row from the table and has two elements, one for each column we requested in
+  our query.
 answer: |
   # get all the data you requested
   query_data = cursor.fetchall()
   print(query_data)
 hint: |
-  <p>Use <code>data = cursor.fetchall()</code> to store the data in a variable.  Then print <code>data</code>.</p>
+  Use `data = cursor.fetchall()` to store the data in a variable. Then print
+  `data`.
 check_vars: []
 check_val: |
   [('John', 'Blue'), ('Vik', 'Blue'), ('Nick', 'Red'), ('Morgan', 'Green')]
@@ -68,115 +79,137 @@ check_val: |
 
 name: LIMITing a query to a few results
 type: code
-solver: limit_example
 initial_vars: 1
 left_text: |
-  <p>When working with big tables with millions of rows or more, we'll sometimes want only get a few rows at a time.</p>
-  <p>SQL lets us limit the number of rows returned with the <code>LIMIT</code> clause.</p>
-  <p>Example: <code>SELECT col_name, another_col_name FROM table_name LIMIT 100;</code> returns the first 100 values.</p>
+  When working with big tables with millions of rows or more, we'll sometimes
+  want only get a few rows at a time.
+
+  SQL lets us limit the number of rows returned with the `LIMIT` clause.
+
+  Example: `SELECT col_name, another_col_name FROM table_name LIMIT 100;`
+  returns the first 100 values.
 initial_display: |
   import sqlite3 # import Python's SQLite3 library
   db_connection = sqlite3.connect('sample.db') # connect to our sample db
 
   # modify this query to LIMIT it to the first two rows
   query = 'SELECT name, favorite_color FROM people;'
-  
+
   # db_connection.execute(query) returns a cursor which has data and metadata
   cursor = db_connection.execute(query)
   data = cursor.fetchall()
-
 instructions: |
-  <p><code>LIMIT</code> the query on the right so it only returns the first two rows.</p>
-  <p>Store the data in the variable <code>data</code>.</p>
+  `LIMIT` the query on the right so it only returns the first two rows.
+
+  Store the data in the variable `data`.
 answer: |
   cursor = db_connection.execute('SELECT name, favorite_color FROM people LIMIT 2;')
   data = cursor.fetchall()
 hint: |
-  <p>The <code>LIMIT 2</code> comes after the <code>FROM table</code> but before the semicolon that ends a SQL query.</p>
+  The `LIMIT 2` comes after the `FROM table` but before the semicolon that ends
+  a SQL query.
 check_vars: ['data']
 
 ---------
 
 name: Using * to get all columns in a table
 type: code
-solver: asterisk_example
 initial_vars: 1
 left_text: |
-  <p>Naming every column you want can be a pain, especially if a table has dozens of columns.  Sometimes, we won't even know what columns a table has.  Fortunately SQL gives us an easy way to get all columns.</p>
-  <p>Instead of providing a comma-separated list of column names, we can use the shorthand of <code>*</code> to tell SQL to return all columns.</p>
-  <p>Example: <code>SELECT * FROM table_name;</code> will get all columns in each row from the table.</p>
+  Naming every column you want can be a pain, especially if a table has dozens
+  of columns. Sometimes, we won't even know what columns a table has.
+  Fortunately SQL gives us an easy way to get all columns.
+
+  Instead of providing a comma-separated list of column names, we can use the
+  shorthand of `*` to tell SQL to return all columns.
+
+  Example: `SELECT * FROM table_name;` will get all columns in each row from the
+  table.
 initial_display: |
   import sqlite3 # import Python's SQLite3 library
   db_connection = sqlite3.connect('sample.db') # connect to our sample db
 
   # Write your query here
   query = ''
-  
+
   # db_connection.execute(query) returns a cursor which has data and metadata
   cursor = db_connection.execute(query)
   data = cursor.fetchall()
-
 instructions: |
-  <p>Write a query on the right to <code>SELECT</code> all columns <code>FROM</code> the people table.</p>
-  <p>Don't name the columns explicitly.  Instead, use SQL's shorthand, <code>*</code>, to tell SQL you want all columns.</p>
-  <p>Store the data returned by <code>cursor.fetchall()</code> in <code>data</code>.</p>
+  Write a query on the right to `SELECT` all columns `FROM` the people table.
+
+  Don't name the columns explicitly. Instead, use SQL's shorthand, `*`, to tell
+  SQL you want all columns.
+
+  Store the data returned by `cursor.fetchall()` in `data`.
 answer: |
   cursor = db_connection.execute('SELECT * FROM people;')
   data = cursor.fetchall()
 hint: |
-  <p>Your query should follow the pattern <code>SELECT * FROM table_name;</code>.</p>
+  Your query should follow the pattern `SELECT * FROM table_name;`.
 check_vars: ['data']
 
 ---------
 
 name: Describing the columns in a table.
 type: code
-solver: column_listing
 initial_vars: 1
 left_text: |
-  <p>Time to work with some real data.</p>
-  <p>This database, factbook.db, comes from the CIA's World Factbook.  It contains a single table called regions which has some information about some countries and regions of the world.</p>
-  <p>First, we'll need to figure out what columns the regions table holds.</p>
-  <p>The cursor stores information about the columns we request in its <code>description</code> attribute.</p>
-  <p>On the right, we've already set up a query.  Instead of looking at the data it returns, let's get a description of that data.</p>
+  Time to work with some real data.
+
+  This database, factbook.db, comes from the CIA's World Factbook. It contains a
+  single table called regions which has some information about some countries
+  and regions of the world.
+
+  First, we'll need to figure out what columns the regions table holds.
+
+  The cursor stores information about the columns we request in its
+  `description` attribute.
+
+  On the right, we've already set up a query. Instead of looking at the data it
+  returns, let's get a description of that data.
 initial_display: |
   import sqlite3 # import Python's SQLite3 library
   db_connection = sqlite3.connect('factbook.db') # connect to our CIA World Factbook db
 
   # SELECT all data from regions table
   query = 'SELECT * FROM regions;'
-  
+
   # db_connection.execute(query) returns a cursor which has data and metadata
   cursor = db_connection.execute(query)
-
 instructions: |
-  <p>Assign the value of <code>cursor.description</code> to the variable <code>metadata</code>.</p>
-  <p>To see the description we get back from the cursor, print the value of <code>metadata</code>.  We'll talk about what the description contains in it in the next step.</p>
+  Assign the value of `cursor.description` to the variable `metadata`.
+
+  To see the description we get back from the cursor, print the value of
+  `metadata`. We'll talk about what the description contains in it in the next
+  step.
 answer: |
   # get the description
   metadata = cursor.description
   print(metadata)
 hint: |
-  <p><code>metadata = cursor.description</code> will store the cursor's metadata in the <code>metadata</code> variable.</p>
+  `metadata = cursor.description` will store the cursor's metadata in the
+  `metadata` variable.
 check_vars: ['metadata']
 
 ---------
 
 name: Listing all the column names in a table
 type: code
-solver: column_names
 initial_vars: 1
 left_text: |
-  <p>Let's get the columns' names from the metadata we retrieved in the last step</p>
-  <p>The description is a list-of-tuples.  There's one inner tuple for each column.</p>
-  <p>Each column's inner tuple contains 7 elements.  The name is the very first one.</p>
+  Let's get the columns' names from the metadata we retrieved in the last step
+
+  The description is a list-of-tuples. There's one inner tuple for each column.
+
+  Each column's inner tuple contains 7 elements. The name is the very first one.
 initial_display: |
   import sqlite3 # import Python's SQLite3 library
   db_connection = sqlite3.connect('factbook.db') # connect to our CIA World Factbook db
 
   # get all columns from the first row of the regions table
   query = 'SELECT * FROM regions LIMIT 1;'
-  
+
   # db_connection.execute(query) returns a cursor which has data and metadata
   cursor = db_connection.execute(query)
   metadata = cursor.description
@@ -184,34 +217,43 @@ initial_display: |
   # store all column names in a list
   column_names = []
 instructions: |
-  <p>Put the first item of each inner tuple from <code>metadata</code> in the <code>column_names</code> list.</p>
-  <p>You can use a loop or a list comprehension, but at the end, <code>column_names</code> should be a list of strings.</p>
-  <p>Last, go ahead and print <code>column_names</code> and read through the pieces of information our table contains about each region.</p>
+  Put the first item of each inner tuple from `metadata` in the `column_names`
+  list.
+
+  You can use a loop or a list comprehension, but at the end, `column_names`
+  should be a list of strings.
+
+  Last, go ahead and print `column_names` and read through the pieces of
+  information our table contains about each region.
 answer: |
   column_names = [col[0] for col in metadata]
   print(column_names)
 hint: |
-  <p><code>column_names</code> should be a list of 14 strings.</p>
+  `column_names` should be a list of 14 strings.
 check_vars: ['column_names']
 
 ---------
 
 name: Using SQL to COUNT rows in a table
 type: code
-solver: count_example
 initial_vars: 1
 left_text: |
-  <p>Let's use SQL to find out about our regions table.  How many regions does it describe?</p>
-  <p>Instead of pulling in all of the data and then calling <code>len(data)</code> in Python, we can use SQL to ask the database to count the rows for us.</p>
-  <p>To do that, we'll use <code>COUNT(*)</code> to see how many rows are in the table.</p>
-  <p>Example: <code>SELECT COUNT(*) FROM table_name;</code></p>
+  Let's use SQL to find out about our regions table. How many regions does it
+  describe?
+
+  Instead of pulling in all of the data and then calling `len(data)` in Python,
+  we can use SQL to ask the database to count the rows for us.
+
+  To do that, we'll use `COUNT(*)` to see how many rows are in the table.
+
+  Example: `SELECT COUNT(*) FROM table_name;`
 initial_display: |
   import sqlite3 # import Python's SQLite3 library
   db_connection = sqlite3.connect('factbook.db') # connect to our CIA World Factbook db
 
   # write your query here
   query = ''
-  
+
   # db_connection.execute(query) returns a cursor which has data and metadata
   cursor = db_connection.execute(query)
   data = cursor.fetchall() # a list-of-tuples
@@ -221,8 +263,11 @@ initial_display: |
 
   print("There are", number_of_regions, "regions in our table")
 instructions: |
-  <p>Write a SQL query to return the count of rows in the regions table.  Store that query in <code>query</code>.</p>
-  <p>Then, modify the line starting with <code>number_of_regions</code> to store the first value of the first inner tuple from <code>data</code> in <code>number_of_regions</code>.</p>
+  Write a SQL query to return the count of rows in the regions table. Store that
+  query in `query`.
+
+  Then, modify the line starting with `number_of_regions` to store the first
+  value of the first inner tuple from `data` in `number_of_regions`.
 answer: |
   query = 'SELECT COUNT(*) FROM regions;'
   cursor = db_connection.execute(query)
@@ -230,7 +275,7 @@ answer: |
   number_of_regions = data[0][0]
   print("There are", number_of_regions, "regions in our table")
 hint: |
-  <p><code>number_of_regions</code> should be an integer from within <code>data</code>.</p>
+  `number_of_regions` should be an integer from within `data`.
 check_vars: ['data', 'number_of_regions']
 
 ---------
