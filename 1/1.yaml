@@ -1,7 +1,7 @@
 ---------
 name: Find the most densely populated country on earth
 description: Use SQL to explore a database and import its data into python
-prerequisites: [9, 13]
+prerequisites: []
 language: python
 premium: False
 under_construction: True
